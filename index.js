@@ -75,7 +75,7 @@ const writeFileProm = (file, data) => {
 //     console.log('Random dog image saved to file!');
 //   })
 //   .catch((err) => {
-//     console.log(err.message);
+//     console.log(err);
 //   });
 
 // ------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ const writeFileProm = (file, data) => {
 //     await writeFileProm('dog-img.txt', res.body.message); // Don't need assign a variable
 //     console.log('Random dog image saved to file!');
 //   } catch (err) {
-//     console.log(err.message);
+//     console.log(err);
 //   }
 // };
 
@@ -105,7 +105,7 @@ const writeFileProm = (file, data) => {
 // Return Values from Async Func
 const getDogPic = async () => {
   try {
-    const data = await readFileProm(`${__dirname}/dog.txt`);
+    const data = await readFileProm(`${__dirname}/dogs.txt`);
     console.log(`Breed: ${data}`);
 
     const res = await superagent.get(
@@ -116,12 +116,13 @@ const getDogPic = async () => {
     await writeFileProm('dog-img.txt', res.body.message); // Don't need assign a variable
     console.log('Random dog image saved to file!');
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
   }
-  return console.log('2: READY');
+  return '2: READY';
 };
 
 console.log('1: Will get dog pics!');
-const x = getDogPic();
-console.log(x);
-console.log('2: Done Getting dog pics!');
+getDogPic().then((x) => {
+  console.log(x);
+  console.log('3: Done Getting dog pics!');
+});
