@@ -105,7 +105,7 @@ const writeFileProm = (file, data) => {
 // Return Values from Async Func
 const getDogPic = async () => {
   try {
-    const data = await readFileProm(`${__dirname}/dogs.txt`);
+    const data = await readFileProm(`${__dirname}/dog.txt`);
     console.log(`Breed: ${data}`);
 
     const res = await superagent.get(
@@ -117,12 +117,28 @@ const getDogPic = async () => {
     console.log('Random dog image saved to file!');
   } catch (err) {
     console.log(err);
+    throw err;
   }
   return '2: READY';
 };
 
-console.log('1: Will get dog pics!');
-getDogPic().then((x) => {
-  console.log(x);
-  console.log('3: Done Getting dog pics!');
-});
+// 1:
+// console.log('1: Will get dog pics!');
+// getDogPic()
+//   .then((x) => {
+//     console.log(x);
+//     console.log('3: Done Getting dog pics!');
+//   })
+//   .catch((err) => console.log('ERROR'));
+
+// 2: Use IIFE(Immediately Invoked Func Expression) instead of using above structure
+(async () => {
+  try {
+    console.log('1: Will get dog pics!');
+    const x = await getDogPic();
+    console.log(x);
+    console.log('3: Done Getting dog pics!');
+  } catch (err) {
+    console.log('ERROR');
+  }
+})();
