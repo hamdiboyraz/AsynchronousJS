@@ -17,7 +17,9 @@ const superagent = require('superagent'); // Enables us to make HTTP Request
 //     });
 // });
 
-// PROMISE
+// ------------------------------------------------------------------------------------
+
+// PROMISE ES6
 // fs.readFile(`${__dirname}/dog.txt`, (err, data) => {
 //   console.log(`Breed: ${data}`);
 
@@ -35,6 +37,8 @@ const superagent = require('superagent'); // Enables us to make HTTP Request
 //       console.log(err.message);
 //     });
 // });
+
+// ------------------------------------------------------------------------------------
 
 // Building our Promise
 const readFileProm = (file) => {
@@ -55,18 +59,43 @@ const writeFileProm = (file, data) => {
   });
 };
 
-readFileProm(`${__dirname}/dog.txt`) // Returns promise
-  .then((data) => {
+// ------------------------------------------------------------------------------------
+
+// 1. Write with Promises
+// readFileProm(`${__dirname}/dog.txt`) // Returns promise
+//   .then((data) => {
+//     console.log(`Breed: ${data}`);
+//     return superagent.get(`https://dog.ceo/api/breed/${data}/images/random`); // Returns promise
+//   })
+//   .then((res) => {
+//     console.log(res.body.message);
+//     return writeFileProm('dog-img.txt', res.body.message); // Returns promise
+//   })
+//   .then(() => {
+//     console.log('Random dog image saved to file!');
+//   })
+//   .catch((err) => {
+//     console.log(err.message);
+//   });
+
+// ------------------------------------------------------------------------------------
+
+// 2. Write with Async/Await ES8 Feature
+const getDogPic = async () => {
+  try {
+    const data = await readFileProm(`${__dirname}/dog.txt`);
     console.log(`Breed: ${data}`);
-    return superagent.get(`https://dog.ceo/api/breed/${data}/images/random`); // Returns promise
-  })
-  .then((res) => {
+
+    const res = await superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
     console.log(res.body.message);
-    return writeFileProm('dog-img.txt', res.body.message); // Returns promise
-  })
-  .then(() => {
+
+    await writeFileProm('dog-img.txt', res.body.message); // Don't need assign a variable
     console.log('Random dog image saved to file!');
-  })
-  .catch((err) => {
+  } catch (err) {
     console.log(err.message);
-  });
+  }
+};
+
+getDogPic();
