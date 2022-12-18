@@ -1,3 +1,6 @@
+const fs = require('fs');
+const superagent = require('superagent'); // Enables us to make HTTP Request
+
 //PROMISE ES6
 fs.readFile(`${__dirname}/dog.txt`, (err, data) => {
   console.log(`Breed: ${data}`);

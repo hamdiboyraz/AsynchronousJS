@@ -20,19 +20,28 @@ const writeFileProm = (file, data) => {
   });
 };
 
-// Return Values from Async Func
 const getDogPic = async () => {
   try {
     const data = await readFileProm(`${__dirname}/dog.txt`);
     console.log(`Breed: ${data}`);
 
-    const res = await superagent.get(
+    const res1Prom = superagent.get(
       `https://dog.ceo/api/breed/${data}/images/random`
     );
-    console.log(res.body.message);
+    const res2Prom = superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
+    const res3Prom = superagent.get(
+      `https://dog.ceo/api/breed/${data}/images/random`
+    );
 
-    await writeFileProm('dog-img.txt', res.body.message); // Don't need assign a variable
-    console.log('Random dog image saved to file!');
+    // Waits until all of them resolve.
+    const all = await Promise.all([res1Prom, res2Prom, res3Prom]);
+    const imgs = all.map((el) => el.body.message);
+    console.log(imgs);
+
+    await writeFileProm('dog-img.txt', imgs.join('\n')); // Don't need assign a variable
+    console.log('Random dog images saved to file!');
   } catch (err) {
     console.log(err);
     throw err;
@@ -40,11 +49,14 @@ const getDogPic = async () => {
   return '2: READY';
 };
 
-// 1:
-console.log('1: Will get dog pics!');
-getDogPic()
-  .then((x) => {
+// IIFE(Immediately Invoked Func Expression)
+(async () => {
+  try {
+    console.log('1: Will get dog pics!');
+    const x = await getDogPic();
     console.log(x);
     console.log('3: Done Getting dog pics!');
-  })
-  .catch((err) => console.log('ERROR'));
+  } catch (err) {
+    console.log('ERROR');
+  }
+})();

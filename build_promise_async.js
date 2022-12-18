@@ -1,3 +1,6 @@
+const fs = require('fs');
+const superagent = require('superagent'); // Enables us to make HTTP Request
+
 // Building our Promise
 const readFileProm = (file) => {
   return new Promise((resolve, reject) => {
