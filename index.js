@@ -81,6 +81,28 @@ const writeFileProm = (file, data) => {
 // ------------------------------------------------------------------------------------
 
 // 2. Write with Async/Await ES8 Feature
+// const getDogPic = async () => {
+//   try {
+//     const data = await readFileProm(`${__dirname}/dog.txt`);
+//     console.log(`Breed: ${data}`);
+
+//     const res = await superagent.get(
+//       `https://dog.ceo/api/breed/${data}/images/random`
+//     );
+//     console.log(res.body.message);
+
+//     await writeFileProm('dog-img.txt', res.body.message); // Don't need assign a variable
+//     console.log('Random dog image saved to file!');
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
+
+// getDogPic();
+
+// ------------------------------------------------------------------------------------
+
+// Return Values from Async Func
 const getDogPic = async () => {
   try {
     const data = await readFileProm(`${__dirname}/dog.txt`);
@@ -96,6 +118,10 @@ const getDogPic = async () => {
   } catch (err) {
     console.log(err.message);
   }
+  return console.log('2: READY');
 };
 
-getDogPic();
+console.log('1: Will get dog pics!');
+const x = getDogPic();
+console.log(x);
+console.log('2: Done Getting dog pics!');
